@@ -1,5 +1,5 @@
 package practica3;
 
-public class CentralitaNotificada {
+public class CentralitaNotificada extends AlarmaHogarState {
 
 }

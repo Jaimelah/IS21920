@@ -1,5 +1,5 @@
 package practica3;
 
-public class EsperandoSalida {
+public class EsperandoSalida extends AlarmaHogarState {
 
 }

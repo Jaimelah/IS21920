@@ -1,5 +1,5 @@
 package practica3;
 
-public class SensoresActivados {
+public class SensoresActivados extends AlarmaHogarState{
 
 }

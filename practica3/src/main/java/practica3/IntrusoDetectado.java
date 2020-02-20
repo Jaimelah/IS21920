@@ -1,5 +1,5 @@
 package practica3;
 
-public class IntrusoDetectado {
+public class IntrusoDetectado extends AlarmaHogarState {
 
 }
