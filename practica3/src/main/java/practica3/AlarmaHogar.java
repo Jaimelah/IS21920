@@ -5,6 +5,7 @@ public class AlarmaHogar {
 	private int intervaloSalida;
 	private int intervaloDesactivacion;
 	private String codigoDesactivacion;
+	public Piloto piloto;
 	public void setState(AlarmaHogarState value) {
 		this.state=value;
 	}
