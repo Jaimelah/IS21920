@@ -16,10 +16,13 @@ public abstract class AlarmaHogarState {
 	public void entryAction(AlarmaHogar context) {}
 	public void exitAction(AlarmaHogar context) {}
 	public void doAction(AlarmaHogar context) {}
-	public void alarmaOff(AlarmaHogar context) {}
+	public void alarmaOff(AlarmaHogar context,String codigo) {}
 	public void alarmaOn(AlarmaHogar context) {}
 	public void intruso(AlarmaHogar context) {}
 	public void off(AlarmaHogar context) {}
+	public void activarSensores(AlarmaHogar context) {}
+	public void desactivarSensores(AlarmaHogar context) {}
+	public void notificarCentralita(AlarmaHogar context) {}
 
 	public static CentralitaNotificada getEstadoCentralitaNotificada() {
 		return estadoCentralitaNotificada;
