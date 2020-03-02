@@ -4,24 +4,29 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class EsperandoSalida extends AlarmaHogarState {
-	protected Timer timer=new Timer();
+	protected Timer timer;
 	protected IntervaloSalidaTask task;
 	
 	@Override
 	public void entryAction(AlarmaHogar context) {
 		task=new IntervaloSalidaTask(context);
-		timer.schedule(task, context.getIntervaloSalida());
+		timer=new Timer();
+		timer.schedule(task, context.getIntervaloSalida()*1000);
 	}
 	@Override
 	public void alarmaOff(AlarmaHogar context,String codigo) {
+		System.out.println(codigo);
+		System.out.println(context.getCodigoDesactivacion());
 		if(context.getCodigoDesactivacion().equals(codigo)) {
 			context.setState(getEstadoApagada());
+			context.getState().entryAction(context);
+			timer.cancel();
 		}
 	}
 	@Override
 	public void activarSensores(AlarmaHogar context) {
 		context.setState(getEstadoSensoresActivados());
-		
+		context.getState().entryAction(context);
 	}
 	public class IntervaloSalidaTask extends TimerTask {
 		private AlarmaHogar context;

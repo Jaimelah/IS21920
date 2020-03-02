@@ -2,11 +2,16 @@ package practica3;
 
 public class AlarmaHogar {
 	private AlarmaHogarState state;
-	private int intervaloSalida;
-	private int intervaloDesactivacion;
-	private String codigoDesactivacion;
+	private int intervaloSalida=4;
+	private int intervaloDesactivacion=4;
+	private String codigoDesactivacion="123456";
 	private Piloto piloto;
 	private int numeroIntentos=3;
+	public AlarmaHogar() {
+		piloto=new Piloto();
+		state=AlarmaHogarState.init(this);
+	}
+	
 	public void setNumeroIntentos(int numeroIntentos) {
 		this.numeroIntentos = numeroIntentos;
 	}

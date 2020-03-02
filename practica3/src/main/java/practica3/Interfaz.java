@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import java.awt.event.MouseAdapter;
@@ -16,9 +18,11 @@ import javax.swing.JLabel;
 public class Interfaz {
 
 	private JFrame frame;
-	private JTextField numberTF;
-	private JTextField stateTF;
-
+	public JTextField numberTF;
+	public JTextField stateTF;
+	public JButton alarmOn;
+	public JButton AlarmOff;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -46,6 +50,8 @@ public class Interfaz {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
+		final AlarmaHogar alarm=new AlarmaHogar();
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 268, 423);
@@ -67,7 +73,7 @@ public class Interfaz {
 		button4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				setNumber(button1, numberTF);
+				setNumber(button4, numberTF);
 			}
 		});
 		button4.setBounds(47, 145, 41, 41);
@@ -142,6 +148,11 @@ public class Interfaz {
 		});
 		button9.setBounds(172, 196, 41, 41);
 		frame.getContentPane().add(button9);
+		final JLabel led= new JLabel("");
+		led.setBounds(172, 247, 50, 50);
+		frame.getContentPane().add(led);
+		led.setOpaque(true);
+		led.setBackground(Color.RED);
 		
 		final JButton button0 = new JButton("0");
 		button0.addMouseListener(new MouseAdapter() {
@@ -159,25 +170,28 @@ public class Interfaz {
 		frame.getContentPane().add(numberTF);
 		numberTF.setColumns(10);
 		
-		JButton btnAceptar = new JButton("Aceptar");
-		btnAceptar.addMouseListener(new MouseAdapter() {
+		alarmOn = new JButton("Encender");
+		alarmOn.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				alarm.alarmaOn();
+				
 				
 			}
 		});
-		btnAceptar.setBounds(45, 351, 85, 25);
-		frame.getContentPane().add(btnAceptar);
+		alarmOn.setBounds(45, 351, 85, 25);
+		frame.getContentPane().add(alarmOn);
 		
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.addMouseListener(new MouseAdapter() {
+		AlarmOff = new JButton("Apagar");
+		AlarmOff.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frame.dispose();
+				alarm.alarmaOff(numberTF.getText());
+				
 			}
 		});
-		btnCancelar.setBounds(130, 351, 85, 25);
-		frame.getContentPane().add(btnCancelar);
+		AlarmOff.setBounds(130, 351, 85, 25);
+		frame.getContentPane().add(AlarmOff);
 		
 		
 		stateTF = new JTextField();
@@ -186,11 +200,42 @@ public class Interfaz {
 		stateTF.setBounds(47, 311, 166, 30);
 		frame.getContentPane().add(stateTF);
 		
-		JLabel led= new JLabel("");
-		led.setBounds(172, 247, 50, 50);
-		frame.getContentPane().add(led);
-		led.setOpaque(true);
-		led.setBackground(Color.RED);
+		class ledTask extends TimerTask{
+
+			public void run() {
+				switch(alarm.getPiloto().getState()) {
+				case 0://Apagado
+					stateTF.setText("Estamos en el estado apagado");
+					
+					led.setBackground(Color.WHITE);
+				break;
+				case 1://Encendido
+					stateTF.setText("Estamos en el estado encendido");
+					led.setBackground(Color.RED);
+				break;
+				case 2://parpadeando
+					stateTF.setText("Estamos en el estado parapdeando");
+					if(led.getBackground().equals(Color.GREEN))
+						led.setBackground(Color.YELLOW);
+					else
+						led.setBackground(Color.GREEN);
+				break;
+				default:
+					System.out.println("Alarma rota");
+				break;
+				
+				}
+				System.out.println(alarm.getPiloto().getState());
+				System.out.println(alarm.getState());
+				
+			}
+			
+		}
+		
+		Timer timer=new Timer();
+		timer.schedule(new ledTask(),0, 500);
+		
+		
 	}
 	private void setNumber(JButton button, JTextField field) {
 		String number=button.getText();

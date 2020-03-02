@@ -11,7 +11,7 @@ public class IntrusoDetectado extends AlarmaHogarState {
 	@Override
 	public void entryAction(AlarmaHogar context) {
 		task=new IntervaloDesactivacionTask(context);
-		timer.schedule(task,context.getIntervaloDesactivacion());
+		timer.schedule(task,context.getIntervaloDesactivacion()*1000);
 	}
 	@Override
 	public void alarmaOff(AlarmaHogar context, String codigo) {
