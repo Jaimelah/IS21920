@@ -186,8 +186,11 @@ public class Interfaz {
 		AlarmOff.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				alarm.alarmaOff(numberTF.getText());
-				
+				if(led.getBackground().equals(Color.BLACK)){
+					alarm.alarmaOff(numberTF.getText());
+				}else if(led.getBackground().equals(Color.RED)||led.getBackground().equals(Color.WHITE)){
+					alarm.alarmaOff(numberTF.getText());
+				}
 			}
 		});
 		AlarmOff.setBounds(130, 351, 85, 25);
@@ -207,18 +210,18 @@ public class Interfaz {
 				case 0://Apagado
 					stateTF.setText("Estamos en el estado apagado");
 					
-					led.setBackground(Color.WHITE);
+					led.setBackground(Color.GRAY);
 				break;
 				case 1://Encendido
 					stateTF.setText("Estamos en el estado encendido");
-					led.setBackground(Color.RED);
+					led.setBackground(Color.BLACK);
 				break;
 				case 2://parpadeando
-					stateTF.setText("Estamos en el estado parapdeando");
-					if(led.getBackground().equals(Color.GREEN))
-						led.setBackground(Color.YELLOW);
+					stateTF.setText("Estamos en el estado parpadeando");
+					if(led.getBackground().equals(Color.RED))
+						led.setBackground(Color.WHITE);
 					else
-						led.setBackground(Color.GREEN);
+						led.setBackground(Color.RED);
 				break;
 				default:
 					System.out.println("Alarma rota");
@@ -235,7 +238,31 @@ public class Interfaz {
 		Timer timer=new Timer();
 		timer.schedule(new ledTask(),0, 500);
 		
-		
+		JFrame frame2 = new JFrame();
+		frame2.setResizable(false);
+		frame2.setBounds(100, 100, 450, 209);
+		frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame2.getContentPane().setLayout(null);
+		JButton btnOff = new JButton("OFF");
+		btnOff.setBounds(36, 55, 150, 100);
+		frame2.getContentPane().add(btnOff);
+		btnOff.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				alarm.off();
+			}
+		});
+		System.out.println(alarm.getState());
+		JButton btnIntruso = new JButton("INTRUSO");
+		btnIntruso.setBounds(265, 55, 150, 100);
+		frame2.getContentPane().add(btnIntruso);
+		btnIntruso.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				alarm.intruso();
+			}
+		});
+		frame2.setVisible(true);
 	}
 	private void setNumber(JButton button, JTextField field) {
 		String number=button.getText();
