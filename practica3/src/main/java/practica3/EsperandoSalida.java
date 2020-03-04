@@ -15,12 +15,10 @@ public class EsperandoSalida extends AlarmaHogarState {
 	}
 	@Override
 	public void alarmaOff(AlarmaHogar context,String codigo) {
-		System.out.println(codigo);
-		System.out.println(context.getCodigoDesactivacion());
 		if(context.getCodigoDesactivacion().equals(codigo)) {
 			context.setState(getEstadoApagada());
 			context.getState().entryAction(context);
-			timer.cancel();
+			task.cancel();
 		}
 	}
 	@Override

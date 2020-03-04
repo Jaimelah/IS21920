@@ -17,9 +17,10 @@ public class IntrusoDetectado extends AlarmaHogarState {
 	public void alarmaOff(AlarmaHogar context, String codigo) {
 		if(!codigo.equals(context.getCodigoDesactivacion())) {
 			getEstadoSensoresActivados().setIntentos(getEstadoSensoresActivados().getIntentos()-1);
-			System.out.println(getEstadoSensoresActivados().getIntentos());
 		}else if(codigo.equals(context.getCodigoDesactivacion())&&getEstadoSensoresActivados().getIntentos()>0) {
 			context.setState(getEstadoApagada());
+			getEstadoApagada().entryAction(context);
+			task.cancel();
 		}
 	}
 	public class IntervaloDesactivacionTask extends TimerTask {

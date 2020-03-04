@@ -4,7 +4,7 @@ public class AlarmaHogar {
 	private AlarmaHogarState state;
 	private int intervaloSalida=8;
 	private int intervaloDesactivacion=8;
-	private String codigoDesactivacion="123456";
+	private String codigoDesactivacion="1";
 	private Piloto piloto;
 	public AlarmaHogar() {
 		piloto=new Piloto();

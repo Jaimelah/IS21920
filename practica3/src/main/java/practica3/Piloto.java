@@ -2,6 +2,7 @@ package practica3;
 
 public class Piloto {
 	private int state=0;
+	
 	public void encender() {
 		state=1;
 	}
@@ -14,6 +15,9 @@ public class Piloto {
 	}
 	public int getState() {
 		return state;
+	}
+	public void setState(int state) {
+		this.state = state;
 	}
 
 }
