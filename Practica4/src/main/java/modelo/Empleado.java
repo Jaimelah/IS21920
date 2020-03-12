@@ -9,15 +9,22 @@ public class Empleado {
 	public boolean baja;
 	public enum Categoria{DIRECTIVO,GESTOR,OBRERO};
 	public Categoria categoriaEmpleado;
+	@SuppressWarnings("serial")
+	public class ErrorEnLaFecha extends Exception{};
+	@SuppressWarnings("serial")
+	public class ErrorCategoria extends Exception{};
+	@SuppressWarnings("serial")
+	public class ErrorBooleano extends Exception{};
+	
 
-	public Empleado(Categoria cat,String nombre, LocalDate date) {
+	public Empleado(Categoria cat,String nombre, LocalDate date,boolean baja) {
 		this.categoriaEmpleado=cat;
 		this.nombre=nombre;
 		this.fechaContratación=date;
-		this.baja=false;
+		this.baja=baja;
 
 	}
-	public double sueldoBruto() {
+	public double sueldoBruto() throws ErrorBooleano, ErrorCategoria, ErrorEnLaFecha {
 		double sueldoBase=0.0;
 		switch(categoriaEmpleado) {
 
