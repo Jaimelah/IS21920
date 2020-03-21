@@ -2,6 +2,7 @@ package tests;
 
 import static org.junit.Assert.assertTrue;
 
+
 import static org.junit.Assert.fail;
 
 import java.time.LocalDate;
@@ -10,13 +11,12 @@ import org.junit.*;
 
 import modelo.Empleado;
 import modelo.Empleado.Categoria;
-import modelo.Empleado.ErrorBaja;
-import modelo.Empleado.ErrorEnLaFecha;
+import modelo.Empleado.DatoIncorrectoException;
 
 public class EmpleadoTest {
 	Empleado empleado;
 	@Test
-	public void testCalculoSueldoBruto() throws ErrorBaja,ErrorEnLaFecha {
+	public void testCalculoSueldoBruto() throws DatoIncorrectoException {
 		//C1 {hoy}
 		empleado=new Empleado(Categoria.DIRECTIVO, "Pepe", LocalDate.now(),true);
 		assertTrue(empleado.sueldoBruto()==1125.0);
@@ -53,14 +53,9 @@ public class EmpleadoTest {
 		//C12
 		try {
 			empleado=new Empleado(Categoria.GESTOR, "n", LocalDate.now().plusDays(1), true);
-			double result=empleado.sueldoBruto();
+			empleado.sueldoBruto();
 			fail("No se ejecuta la excepción de la fecha(Erronea)");
-		}catch(ErrorEnLaFecha e){	
-		} catch (ErrorBaja e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}catch(DatoIncorrectoException e){
 		}
 		//C13
 		try {
@@ -68,26 +63,14 @@ public class EmpleadoTest {
 			empleado.sueldoBruto();
 			fail("No se ejecuta la excepción de la fecha(Null)");
 		}catch(NullPointerException e) {
-			
-		}catch(ErrorEnLaFecha e) {
-			
-		} catch (ErrorBaja e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}catch(DatoIncorrectoException e) {
 		}
 		//C14
 		try {
 			empleado=new Empleado(null, "n", LocalDate.now(), true);
 			empleado.sueldoBruto();
 		}catch(NullPointerException e) {	
-		}catch (ErrorBaja e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ErrorEnLaFecha e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}catch (DatoIncorrectoException e) {
 		}
 		//C15
 		//try {
@@ -98,7 +81,7 @@ public class EmpleadoTest {
 		//}
 		//C16
 		//try {
-		//	empleado=new Empleado(Categoria.GESTOR, "n", LocalDate.now(), );
+		//	empleado=new Empleado(Categoria.GESTOR, "n", LocalDate.now(), null);
 		//}catch(NullPointerException e){
 
 		//}
@@ -110,7 +93,7 @@ public class EmpleadoTest {
 			empleado=new Empleado(Categoria.DIRECTIVO, "n", LocalDate.now().minusDays(10), false);
 			empleado.darDeAlta();
 			fail("No se ha producido excepción de dar de alta");
-		} catch (ErrorBaja e) {
+		} catch (DatoIncorrectoException e) {
 		}
 	}
 
@@ -119,7 +102,7 @@ public class EmpleadoTest {
 		try {
 			empleado=new Empleado(Categoria.DIRECTIVO, "n", LocalDate.now().minusDays(10), true);
 			empleado.darDeBaja();
-		} catch (ErrorBaja e) {
+		} catch (DatoIncorrectoException e) {
 			// TODO: handle exception
 		}
 	}

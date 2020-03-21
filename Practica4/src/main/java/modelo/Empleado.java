@@ -10,9 +10,7 @@ public class Empleado {
 	public enum Categoria{DIRECTIVO,GESTOR,OBRERO};
 	public Categoria categoriaEmpleado;
 	@SuppressWarnings("serial")
-	public class ErrorEnLaFecha extends Exception{};
-	@SuppressWarnings("serial")
-	public class ErrorBaja extends Exception{};
+	public class DatoIncorrectoException extends Exception{};
 	
 
 	public Empleado(Categoria cat,String nombre, LocalDate date,boolean baja) {
@@ -22,10 +20,10 @@ public class Empleado {
 		this.baja=baja;
 
 	}
-	public double sueldoBruto() throws ErrorBaja, ErrorEnLaFecha {
+	public double sueldoBruto() throws DatoIncorrectoException{
 		if(fechaContratación.isAfter(LocalDate.now()) || fechaContratación==null) {
 			System.out.println("1");
-			throw new ErrorEnLaFecha();
+			throw new DatoIncorrectoException();
 		}
 		double sueldo=0.0;
 		switch(categoriaEmpleado) {
@@ -58,16 +56,16 @@ public class Empleado {
 		}
 		return sueldo;
 	}
-	public boolean darDeAlta() throws ErrorBaja {
+	public boolean darDeAlta() throws DatoIncorrectoException {
 		if(baja!=true) {
-			throw new ErrorBaja();
+			throw new DatoIncorrectoException();
 		}
 		baja=false;
 		return true;
 	}
-	public boolean darDeBaja() throws ErrorBaja {
+	public boolean darDeBaja() throws DatoIncorrectoException {
 		if(baja!=false) {
-			throw new ErrorBaja();
+			throw new DatoIncorrectoException();
 		}
 		baja=true;
 		return true;

@@ -2,13 +2,11 @@ package principal;
 
 import java.awt.EventQueue;
 
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import es.unican.is2.practica4.model.Categoria;
-import es.unican.is2.practica4.model.DatoIncorrectoException;
-import es.unican.is2.practica4.model.Empleado;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -82,15 +80,21 @@ public class EmpleadosGUI extends JFrame {
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			    LocalDate fechaUltimaVisita = LocalDate.parse(txtFechaContratacion.getText(), formatter);
 			    boolean baja = btnBaja.isSelected();
-			    Categoria categoria = Categoria.valueOf(comboCategoria.getSelectedItem().toString());
-			    Empleado emp = new Empleado("Pepe", fechaUltimaVisita, categoria);
+			    modelo.Empleado.Categoria categoria = modelo.Empleado.Categoria.valueOf(comboCategoria.getSelectedItem().toString());
+			    modelo.Empleado emp = new modelo.Empleado(categoria, "Pepe", fechaUltimaVisita, false);
+			    		//("Pepe", fechaUltimaVisita, categoria);
 			    if (baja)
-			    	emp.darBaja();
+					try {
+						emp.darDeBaja();
+					} catch (modelo.Empleado.DatoIncorrectoException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 			    double sueldo = 0;
 				try {			
 					sueldo = emp.sueldoBruto();
 					txtSueldo.setText(Double.toString(sueldo));
-				} catch (DatoIncorrectoException e) {
+				} catch (modelo.Empleado.DatoIncorrectoException e) {
 					txtSueldo.setText(Double.toString(sueldo));
 				}
 				
