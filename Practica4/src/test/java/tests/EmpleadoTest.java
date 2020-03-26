@@ -55,8 +55,7 @@ public class EmpleadoTest {
 			empleado=new Empleado(Categoria.GESTOR, "n", LocalDate.now().plusDays(1), true);
 			empleado.sueldoBruto();
 			fail("No se ejecuta la excepción de la fecha(Erronea)");
-		}catch(DatoIncorrectoException e){
-		}
+			}catch(DatoIncorrectoException e){}
 		//C13
 		try {
 			empleado=new Empleado(Categoria.GESTOR, "n",null, true);
@@ -69,6 +68,7 @@ public class EmpleadoTest {
 		try {
 			empleado=new Empleado(null, "n", LocalDate.now(), true);
 			empleado.sueldoBruto();
+			fail("No se ejecuta la excepcion con null en Categoria");
 		}catch(NullPointerException e) {	
 		}catch (DatoIncorrectoException e) {
 		}
@@ -81,14 +81,19 @@ public class EmpleadoTest {
 		//}
 		//C16
 		//try {
-		//	empleado=new Empleado(Categoria.GESTOR, "n", LocalDate.now(), null);
+		//	empleado=new Empleado(Categoria.GESTOR, "n", LocalDate.now(), nullwo);
 		//}catch(NullPointerException e){
 
 		//}
 
 	}
 	@Test
-	public void testDarDeAlta() {
+	public void testDarDeAlta() throws DatoIncorrectoException {
+		
+		empleado=new Empleado(Categoria.DIRECTIVO,"n",LocalDate.now(),true);
+		empleado.darDeAlta();
+		assertTrue(empleado.baja==false);
+		
 		try {
 			empleado=new Empleado(Categoria.DIRECTIVO, "n", LocalDate.now().minusDays(10), false);
 			empleado.darDeAlta();
@@ -98,7 +103,12 @@ public class EmpleadoTest {
 	}
 
 	@Test
-	public void testDarDeBaja() {
+	public void testDarDeBaja() throws DatoIncorrectoException {
+		
+		empleado=new Empleado(Categoria.DIRECTIVO,"n",LocalDate.now(),false);
+		empleado.darDeBaja();
+		assertTrue(empleado.baja);
+		
 		try {
 			empleado=new Empleado(Categoria.DIRECTIVO, "n", LocalDate.now().minusDays(10), true);
 			empleado.darDeBaja();

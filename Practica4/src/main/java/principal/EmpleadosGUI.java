@@ -16,7 +16,6 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
-import javax.swing.DropMode;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
@@ -27,6 +26,7 @@ public class EmpleadosGUI extends JFrame {
 	private JTextField txtFechaContratacion;
 	private JTextField txtSueldo;
 	private JRadioButton btnBaja;
+	@SuppressWarnings("rawtypes")
 	private JComboBox comboCategoria;
 
 	/**
@@ -48,6 +48,7 @@ public class EmpleadosGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public EmpleadosGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 408, 213);
@@ -57,7 +58,7 @@ public class EmpleadosGUI extends JFrame {
 		contentPane.setLayout(null);
 		
 		txtFechaContratacion = new JTextField();
-		txtFechaContratacion.setText("dd/mm/yyyy");
+		txtFechaContratacion.setText("dd-mm-yyyy");
 		txtFechaContratacion.setName("txtFechaContratacion");
 		txtFechaContratacion.setBounds(124, 8, 86, 20);
 		contentPane.add(txtFechaContratacion);
@@ -77,17 +78,15 @@ public class EmpleadosGUI extends JFrame {
 		btnCalcular.setName("btnCalcular");
 		btnCalcular.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 			    LocalDate fechaUltimaVisita = LocalDate.parse(txtFechaContratacion.getText(), formatter);
 			    boolean baja = btnBaja.isSelected();
 			    modelo.Empleado.Categoria categoria = modelo.Empleado.Categoria.valueOf(comboCategoria.getSelectedItem().toString());
 			    modelo.Empleado emp = new modelo.Empleado(categoria, "Pepe", fechaUltimaVisita, false);
-			    		//("Pepe", fechaUltimaVisita, categoria);
 			    if (baja)
 					try {
 						emp.darDeBaja();
 					} catch (modelo.Empleado.DatoIncorrectoException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 			    double sueldo = 0;
@@ -105,7 +104,7 @@ public class EmpleadosGUI extends JFrame {
 		
 		btnBaja = new JRadioButton("Baja");
 		btnBaja.setBounds(249, 26, 109, 23);
-		btnBaja.setName("btnVIP");
+		btnBaja.setName("btnBaja");
 		contentPane.add(btnBaja);
 		
 		comboCategoria = new JComboBox();
