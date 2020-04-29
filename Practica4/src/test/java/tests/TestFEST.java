@@ -43,6 +43,7 @@ public class TestFEST {
 	private String[] resultados=
 		{"1125.0","1200.0","750.0","1550.0","937.5","1050.0","975.0","1600.0","975.0","1400.0","1050.0"};
 	private FrameFixture demo;
+	
 	@Before
 	public void setUp() {
 		EmpleadosGUI gui =new EmpleadosGUI();
