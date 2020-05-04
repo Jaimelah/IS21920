@@ -5,18 +5,19 @@ package es.unican.is2.tiendaRefactorizada;
  * Vendedor de la tienda, con sus datos personales 
  * y datos de ventas y comisiones
  */
-public abstract class Vendedor {
+public class Vendedor {
 	
 	private String id;
 	private String nombre;
-	
+	private TipoVendedor tipo;
 	
 	// Valor total de las ventas mensuales realizadas por el vendedor
 	private double t;
 	
-	public Vendedor(String nombre, String id) {//WMC+1
+	public Vendedor(String nombre, String id, TipoVendedor tipo) {//WMC+1
 		this.nombre = nombre;
 		this.id = id;
+		this.tipo=tipo;
 	}
 	
 
@@ -62,13 +63,17 @@ public abstract class Vendedor {
 		t += importe;
 	}
 	
+	public TipoVendedor tipo() {//WMC+1
+		return tipo;
+	}
+	
 	
 	@Override
 	public boolean equals(Object obj) {//WMC+1
 		if (!(obj instanceof Vendedor)) //WMC+1 CCog+1
 			return false;
 		Vendedor v = (Vendedor) obj;
-		return (v.id.equals(id) && v.nombre.equals(nombre));//WMC+1 CCog+1
+		return (v.id.equals(id) && v.nombre.equals(nombre)&&v.tipo.equals(tipo));//WMC+1 CCog+1
 	}
 	
 	

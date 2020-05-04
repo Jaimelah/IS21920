@@ -97,23 +97,23 @@ public class Tienda {
 		if (v == null) {//WMC+1 CCog+1
 			return false;
 		}
-		double importeFinal = importe;
-		if (v instanceof VendedorEnPlantilla) {//WMC+1 CCog+1
-			switch (((VendedorEnPlantilla) v).tipo()) {//WMC+2 CCog+2
-			case JUNIOR:
-				importeFinal += importeFinal * 0.005;
-				break;
-			case SENIOR:
-				importeFinal += importeFinal * 0.01;
-				break;
-			}
+		double importeFinal = importe;//WMC+1 CCog+1
+		switch (v.tipo()) {//WMC+2 CCog+2
+		case JUNIOR:
+			importeFinal += importeFinal * 0.005;
+			break;
+		case SENIOR:
+			importeFinal += importeFinal * 0.01;
+			break;
+		case PRACTICAS:
+			break;				
 		}
 		v.anhade(importeFinal);
 		vuelcaDatos();
 		return true;
 	}
-	
-	private void leeVendedoresPlantilla(LinkedList<Vendedor> lista, Scanner in, String tipo) {
+
+	private void leeVendedores(LinkedList<Vendedor> lista, Scanner in, String tipo, TipoVendedor t) {
 		Vendedor ven = null;
 		while (in.hasNext() && !in.next().equals(tipo)) {//WMC+2  CCog+1
 			String nombre = in.next();
@@ -121,20 +121,7 @@ public class Tienda {
 			String idIn = in.next();
 			in.next();
 			double totalVentas = in.nextDouble();
-			ven = new VendedorEnPlantilla(nombre, idIn, TipoVendedor.SENIOR);
-			ven.setT(totalVentas);
-			lista.add(ven);
-		}
-	}
-	private void leeVendedoresPracticas(LinkedList<Vendedor> lista, Scanner in, String tipo) {
-		Vendedor ven = null;
-		while (in.hasNext() && !in.next().equals(tipo)) {//WMC+2 CCog+1
-			String nombre = in.next();
-			in.next();
-			String id = in.next();
-			in.next();
-			double totalVentas = in.nextDouble();
-			ven = new vendedorEnPracticas(nombre, id);
+			ven = new Vendedor(nombre, idIn, t);
 			ven.setT(totalVentas);
 			lista.add(ven);
 		}
@@ -160,9 +147,9 @@ public class Tienda {
 			direccion = in.nextLine();
 			in.next();
 			// lee los vendedores senior
-			leeVendedoresPlantilla(lista, in, "Junior");
-			leeVendedoresPracticas(lista, in, "Prácticas");
-			leeVendedoresPlantilla(lista, in, null);
+			leeVendedores(lista, in, "Junior", TipoVendedor.SENIOR);
+			leeVendedores(lista, in, "Prácticas",TipoVendedor.JUNIOR);
+			leeVendedores(lista, in, null,TipoVendedor.PRACTICAS);
 		} catch (FileNotFoundException e) {//WMC+1 CCog+1
 		} finally {
 			if (in != null) {//WMC+1 CCog+1
@@ -196,9 +183,10 @@ public class Tienda {
 			direccion = in.nextLine();
 			in.next();
 			// lee los vendedores senior
-			leeVendedoresPlantilla(lista, in, "Junior");
-			leeVendedoresPracticas(lista, in, "Prácticas");
-			leeVendedoresPlantilla(lista, in, null);
+			leeVendedores(lista, in, "Junior", TipoVendedor.SENIOR);
+			leeVendedores(lista, in, "Prácticas",TipoVendedor.JUNIOR);
+			leeVendedores(lista, in, null,TipoVendedor.PRACTICAS);
+
 		} catch (FileNotFoundException e) {//WMC+1 CCog+1
 
 		} finally {
@@ -222,35 +210,36 @@ public class Tienda {
 		List<Vendedor> practicas = new LinkedList<Vendedor>();
 
 		for (Vendedor v : lista) {//WMC+1 CCog+1
-			if (v instanceof vendedorEnPracticas) {//WMC+1 CCog+2
+			switch(v.tipo()) {
+			case JUNIOR:
+				junior.add(v);
+				break;
+			case PRACTICAS:
 				practicas.add(v);
-			} else if (v instanceof VendedorEnPlantilla) {//WMC+1 CCog+2
-				VendedorEnPlantilla vp = (VendedorEnPlantilla) v;
-				if (vp.tipo().equals(TipoVendedor.JUNIOR))//WMC+1 CCog+3
-					junior.add(vp);
-				else
-					senior.add(vp);
+				break;
+			case SENIOR:
+				senior.add(v);
+				break;
+
+			}
+			try {
+				out = new PrintWriter(new FileWriter(datos));
+				parseWorkers(out, senior, "    Senior");
+				parseWorkers(out, junior, "    Junior");
+				parseWorkers(out, practicas, "    Practicas");
+			} finally {
+				if (out != null)//WMC+1 CCog+1
+					out.close();
 			}
 		}
+	}
+		private void parseWorkers(PrintWriter out, List<Vendedor> lista, String tipo) {
+			out.println(tipo);
+			for (Vendedor v : lista)//WMC+1 CCog+1
+				out.println("      Nombre: " + v.getNombre() + "   Id: " + v.getId() + "   TotalVentasMes: "
+						+ v.getTotalVentas());
+			out.println();
 
-		try {
-
-			out = new PrintWriter(new FileWriter(datos));
-			parseWorkers(out, senior, "    Senior");
-			parseWorkers(out, junior, "    Junior");
-			parseWorkers(out, practicas, "    Practicas");
-		} finally {
-			if (out != null)//WMC+1 CCog+1
-				out.close();
 		}
-	}
-	private void parseWorkers(PrintWriter out, List<Vendedor> lista, String tipo) {
-		out.println(tipo);
-		for (Vendedor v : lista)//WMC+1 CCog+1
-			out.println("      Nombre: " + v.getNombre() + "   Id: " + v.getId() + "   TotalVentasMes: "
-					+ v.getTotalVentas());
-		out.println();
-		
-	}
 
-}
+	}

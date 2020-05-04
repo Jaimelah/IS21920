@@ -1,6 +1,7 @@
 package es.unican.is2.tienda.gui;
 
 import java.io.IOException;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
